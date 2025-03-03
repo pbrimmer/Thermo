@@ -1,6 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+import seaborn as sns
+sns.set_color_codes()
+
+
 #Choose a path:
 
 def path(P0,V0,t):
@@ -12,8 +16,6 @@ def path(P0,V0,t):
 
     V = V0/t
     P = P0*t**gamma
-    V = V0*t
-    P = P0*t**(-gamma)
 
     return P,V
 
@@ -41,7 +43,16 @@ t = np.arange(t0,t1+dt,dt)
 
 P,V = path(P0,V0,t)
 
+plt.xlim(0.0,1.1*np.max(V))
+plt.ylim(0.0,1.1*np.max(P))
+
+plt.ylabel('Pressure (Pa)')
+plt.xlabel('Volume (m$^3$)')
+
 plt.plot(V,P,'k-')
+plt.plot([V0],[P0],'ro',label='Start')
+plt.plot([V[len(V)-1]],[P[len(P)-1]],'bo',label='End')
+plt.legend()
 plt.savefig('./Phase-Path.pdf',bbox_inches='tight')
 
 S = S0
@@ -49,6 +60,7 @@ T = T0
 U = U0
 Q = Q0
 W = W0
+Qabs = 0.0      #Absorbed heat (J)
 
 for i in range(len(t)-1):
     dP = P[i+1] - P[i]
@@ -66,6 +78,7 @@ for i in range(len(t)-1):
 
     U += dU
     Q += dQ
+    if dQ > 0.0: Qabs += dQ
     W += dW
 
 print('Volume change = ' + ('%.3e' % (V[len(P)-1] - V[0])) + ' m3')
@@ -83,3 +96,7 @@ print('Change in Work = ' + ('%.3e' % W) + ' J')
 print('----------')
 print('Test for dU = dQ + dW:')
 print('dU - dQ - dW = ' + ('%.3e' % (U - U0 - Q - W)) + ' J')
+print('----------')
+if Qabs > 0.0 and W < 0.0:
+    print('Engine efficiency - Only meaningful if a closed cycle!')
+    print('epsilon = ' + ('%.2f' % (-W/Qabs)))
