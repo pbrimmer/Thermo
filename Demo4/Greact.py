@@ -5,24 +5,17 @@ import matplotlib.pyplot as plt
 
 #Write out a reaction here using '+' to separate species, and '->' to separate reactants and products.
 
-reaction = 'H2O -> HO + H'
-#reaction = 'H2S + H2S + CO2 -> CS2 + H2O + H2O'
-#reaction = 'OCS + S -> CO + S2'
-#reaction = 'HCN + HCN + HCN + HCN + O2 + O2 + O2 + O2 + O2 -> H2O + H2O + CO2 + CO2 + CO2 + CO2 + N2 + N2'
-#reaction = 'HCN -> HNC'
-#reaction = 'H2 + H2 + H2 + CO -> CH4 + H2O'
-#reaction = 'N2 + H2 + H2 + H2 -> H3N + H3N'
-#reaction = 'CH4 + O2 + O2 -> CO2 + H2O + H2O'
+reaction = 'H2O + H2O -> H2 + H2 + O2'
 
 R = 8.3145e-3            #Gas constant, units of kJ/(mol K)
 
 #Temperature range, plotted from 100 K -- 3000K
 
-T = np.arange(1600.0,2200.1,0.1)
+T = np.arange(300.0,6000.1,0.1)
 
 #Reads cond_initial.dat from update-species, which should always be identical to the cond_initial.dat from the cond_initial folder!
 
-Bulk = np.genfromtxt('./reaction-list/update-species/cond_initial.dat',skip_header=10,dtype=str)
+Bulk = np.genfromtxt('./cond_initial.dat',skip_header=10,dtype=str)
 
 #Parses the reaction:
 
@@ -104,9 +97,9 @@ plt.plot(T,Gprod - Greact)
 plt.xlabel('temperature (K)')
 plt.ylabel('Gibbs free energy (kJ/mol)')
 
-plt.savefig('./out/Figures/Gr-kJ_mol.pdf',bbox_inches='tight')
+plt.savefig('./pGr-kJ_mol.pdf',bbox_inches='tight')
 
-fout = open('./out/Gr-kJ_mol.dat','w')
+fout = open('./dGr-kJ_mol.dat','w')
 
 fout.write('Reaction energetics (Gibbs free energy, kJ/mol) as a function of temperature (K).')
 fout.write('\n------------------------------------------------------------------------------')
