@@ -18,4 +18,6 @@ plt.ylim(0.0,5.0)
 for i in range(len(Tr)):
     plt.plot(Vr,P_VDW(Vr,Tr[i]))
 
-plt.show()
+plt.xlabel('volume')
+plt.ylabel('pressure')
+plt.savefig('./VDW.pdf',bbox_inches='tight')
